@@ -1,0 +1,6 @@
+# Raw downloads and processed images — not committed to git
+raw/
+splits/
+# Keep the gitignore itself and the README
+!.gitignore
+!README.md
