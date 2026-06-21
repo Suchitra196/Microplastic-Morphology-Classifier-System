@@ -6,3 +6,18 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# ML service generated artefacts — not committed
+ml-service/data/raw/
+ml-service/data/splits/
+ml-service/models/*.pt
+ml-service/data/analyses.db
+ml-service/results/gradcam_examples/
+ml-service/results/dataset_manifest.json
+ml-service/results/training_log.json
+ml-service/results/metrics.json
+ml-service/results/retraining_export.csv
+__pycache__/
+**/__pycache__/
+*.pyc
+.pytest_cache/
