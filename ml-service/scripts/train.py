@@ -48,8 +48,8 @@ RESULTS_DIR.mkdir(exist_ok=True)
 # ── hyperparameters ──────────────────────────────────────────────────────────
 IMG_SIZE       = 224
 BATCH_SIZE     = 32
-WARMUP_EPOCHS  = 5    # head-only training
-FINETUNE_EPOCHS = 20  # partial unfreeze
+WARMUP_EPOCHS  = 8    # head-only training
+FINETUNE_EPOCHS = 30  # partial unfreeze
 LR_WARMUP      = 1e-3
 LR_FINETUNE    = 3e-4
 WEIGHT_DECAY   = 1e-4

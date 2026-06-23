@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>New Analysis - MicroClassify</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "tertiary-fixed": "#ffdcc0",
+                "outline-variant": "#3c4a46",
+                "on-primary-fixed": "#00201c",
+                "tertiary": "#ffd1aa",
+                "on-surface": "#e5e2e1",
+                "tertiary-fixed-dim": "#ffb875",
+                "error-container": "#93000a",
+                "on-primary-container": "#00574d",
+                "primary-fixed": "#62fae3",
+                "on-background": "#e5e2e1",
+                "surface-variant": "#353534",
+                "inverse-primary": "#006b5f",
+                "secondary-container": "#144f4b",
+                "error": "#ffb4ab",
+                "on-tertiary-container": "#744000",
+                "on-tertiary": "#4b2800",
+                "inverse-on-surface": "#313030",
+                "on-tertiary-fixed-variant": "#6b3b00",
+                "on-primary": "#003731",
+                "surface-bright": "#3a3939",
+                "on-error": "#690005",
+                "tertiary-container": "#ffac5a",
+                "surface-dim": "#131313",
+                "surface-container": "#201f1f",
+                "surface-tint": "#3cddc7",
+                "secondary-fixed-dim": "#9ad1cb",
+                "surface-container-lowest": "#0e0e0e",
+                "on-secondary-fixed": "#00201e",
+                "surface-container-high": "#2a2a2a",
+                "on-secondary": "#003734",
+                "inverse-surface": "#e5e2e1",
+                "secondary-fixed": "#b5ede7",
+                "on-secondary-container": "#89bfba",
+                "outline": "#859490",
+                "surface-container-low": "#1c1b1b",
+                "on-tertiary-fixed": "#2d1600",
+                "on-secondary-fixed-variant": "#144f4b",
+                "primary-fixed-dim": "#3cddc7",
+                "on-error-container": "#ffdad6",
+                "on-surface-variant": "#bacac5",
+                "primary-container": "#2dd4bf",
+                "secondary": "#9ad1cb",
+                "primary": "#57f1db",
+                "surface-container-highest": "#353534",
+                "surface": "#131313",
+                "background": "#131313",
+                "on-primary-fixed-variant": "#005047"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "base": "8px",
+                "margin-mobile": "16px",
+                "container-padding": "32px",
+                "gutter": "24px"
+        },
+        "fontFamily": {
+                "display-lg": [
+                        "Hanken Grotesk"
+                ],
+                "headline-lg": [
+                        "Hanken Grotesk"
+                ],
+                "headline-lg-mobile": [
+                        "Hanken Grotesk"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "label-sm": [
+                        "JetBrains Mono"
+                ]
+        },
+        "fontSize": {
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "56px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        /* Custom utilities for components not fully covered by tokens */
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .icon-fill { font-variation-settings: 'FILL' 1; }
+        
+        /* Drag and Drop hover state */
+        .dropzone-active { border-color: #57f1db !important; background-color: rgba(45, 212, 191, 0.1) !important; box-shadow: 0 0 15px rgba(45, 212, 191, 0.3) !important; }
+        
+        /* Custom scrollbar for tables/notes */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3c4a46; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #859490; }
+
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(32, 31, 31, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(133, 148, 144, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased">
+<!-- TopNavBar (Shared Component) -->
+<nav class="bg-surface-container-lowest border-b border-outline-variant w-full relative z-10">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-container-padding h-[64px] max-w-7xl mx-auto">
+<!-- Brand Logo -->
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[28px] icon-fill">science</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">MicroClassify</span>
+</div>
+<!-- Navigation Links (Desktop) -->
+<ul class="hidden md:flex items-center gap-8">
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">How it works</a></li>
+<!-- Active State applied to Dashboard conceptually, though this is a sub-page of it -->
+<li><a class="font-label-sm text-label-sm text-primary border-b-2 border-primary pb-1 opacity-80 transition-opacity" href="#">Dashboard</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">About</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">GitHub</a></li>
+</ul>
+<!-- Trailing Action -->
+<div class="hidden md:block">
+<button class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-4 py-2 rounded shadow-sm hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                    Start analysis
+                </button>
+</div>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px]">menu</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-7xl mx-auto px-margin-mobile md:px-container-padding py-8 md:py-12">
+<!-- Page Header & Back Action -->
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+<div class="flex items-center gap-3">
+<button aria-label="Go back" class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface">New analysis</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Upload a sample image and configure classification parameters.</p>
+</div>
+</div>
+</div>
+<!-- Configuration Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Upload Dropzone (Spans 7 cols on Desktop) -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<!-- Dropzone Card -->
+<div class="glass-panel rounded-xl overflow-hidden flex flex-col shadow-lg shadow-black/50">
+<div class="px-6 py-4 border-b border-outline-variant/30 bg-surface-container-low/50">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Sample Input</h2>
+</div>
+<div class="p-6">
+<div class="w-full h-80 rounded-xl border-2 border-dashed border-outline hover:border-primary bg-surface-container-lowest/40 flex flex-col items-center justify-center transition-all duration-300 relative cursor-pointer group shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]" id="dropzone">
+<!-- Default State -->
+<div class="flex flex-col items-center justify-center pointer-events-none" id="dropzone-content">
+<div class="w-16 h-16 rounded-full bg-surface-container-high/80 flex items-center justify-center mb-4 group-hover:bg-primary-container/20 group-hover:shadow-[0_0_15px_rgba(45,212,191,0.3)] transition-all duration-300 border border-outline-variant">
+<span class="material-symbols-outlined text-[32px] text-primary group-hover:text-primary-fixed">cloud_upload</span>
+</div>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Drag and drop file here</p>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 text-center max-w-xs">Supported formats: TIFF, JPEG, PNG. Maximum file size: 50MB.</p>
+<button class="border border-outline text-on-surface font-label-sm text-label-sm px-4 py-2 rounded bg-surface-container hover:bg-surface-container-high transition-colors pointer-events-auto hover:border-primary/50 hover:shadow-[0_0_10px_rgba(45,212,191,0.2)]" type="button">
+                                    Browse files
+                                </button>
+</div>
+<!-- Selected State (Hidden initially) -->
+<div class="hidden absolute inset-0 glass-panel flex flex-col p-6 pointer-events-none" id="file-selected-state">
+<div class="w-full h-48 bg-surface-container-highest rounded-lg border border-outline-variant mb-4 overflow-hidden relative">
+<!-- Placeholder for selected image preview -->
+<img alt="Sample preview" class="w-full h-full object-cover opacity-60" data-alt="A highly detailed microscopic photograph showing various irregular, brightly colored microplastic fragments (blue, red, and green) scattered across a neutral, pale gray analytical background filter. The lighting is clinical and uniform, emphasizing the sharp edges and distinct morphology of the particles. The aesthetic is strictly scientific and objective." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzU1t0_tKr9Bb7ICWkMrNL9yRWFdizCYIuUC0PfCOwr_d1HqeWyxDhrF8EdLQXLqo-OyZca9uCx3AhOFoV1t2KSTHKsJYps4krp7dojlk9gQRXRAIbxkOTtjNqB-upElV-d0lstly03HPbgycOVa2a_IHvBdWyFk8xKTbPxPABF4TRyJfKXo0R8U-bTBO66AsCYm7liVND5oLzdDqqHCnoO09_LsHFnQTQ8q0yrBFdJ9HG5oJPedo3pPLuSwE8PMKLeZJ2PztRag"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-80"></div>
+</div>
+<div class="flex items-center justify-between w-full pointer-events-auto mt-auto bg-surface-container-low p-3 rounded-lg border border-outline-variant/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">image</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface">water_sample_b_site_4.tif</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">12.4 MB</p>
+</div>
+</div>
+<button class="text-error hover:bg-error-container/30 hover:text-error p-2 rounded-full transition-colors flex items-center justify-center" id="remove-file-btn">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Hidden File Input -->
+<input accept=".tif,.jpg,.jpeg,.png" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" id="file-input" type="file"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Form Constraints (Spans 5 cols on Desktop) -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<!-- Settings Card -->
+<div class="glass-panel rounded-xl overflow-hidden flex flex-col shadow-lg shadow-black/50">
+<div class="px-6 py-4 border-b border-outline-variant/30 bg-surface-container-low/50">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Analysis Parameters</h2>
+</div>
+<div class="p-6 flex flex-col gap-6">
+<!-- Scale Calibration Input -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-sm text-label-sm text-on-surface flex items-center gap-2" for="scale-input">
+                                    Scale Calibration
+                                    <div class="relative group cursor-help">
+<span class="material-symbols-outlined text-[16px] text-primary/70 hover:text-primary">info</span>
+<!-- Tooltip -->
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-surface-bright text-on-surface font-body-md text-[12px] leading-tight rounded border border-outline-variant opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 shadow-xl pointer-events-none">
+                                            Define the physical size of one pixel in the uploaded image to ensure accurate morphological measurements (area, perimeter, etc.).
+                                            <!-- Tooltip arrow -->
+<div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-surface-bright"></div>
+</div>
+</div>
+</label>
+</div>
+<div class="relative flex items-center w-full">
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-l px-4 py-2.5 font-label-sm text-label-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary focus:shadow-[0_0_8px_rgba(45,212,191,0.4)] z-10 transition-all" id="scale-input" min="0.01" step="0.01" type="number" value="1.25"/>
+<div class="bg-surface-container border-y border-r border-outline-variant rounded-r px-4 py-2.5 font-label-sm text-label-sm text-on-surface-variant flex items-center justify-center min-w-[80px]">
+                                    µm / px
+                                </div>
+<!-- Stepper controls overlay -->
+<div class="absolute right-[81px] top-[1px] bottom-[1px] flex flex-col border-l border-outline-variant z-20 bg-surface-container">
+<button class="flex-1 px-1.5 hover:bg-surface-container-high hover:text-primary border-b border-outline-variant flex items-center justify-center text-on-surface-variant transition-colors" onclick="document.getElementById('scale-input').stepUp()" type="button">
+<span class="material-symbols-outlined text-[14px]">expand_less</span>
+</button>
+<button class="flex-1 px-1.5 hover:bg-surface-container-high hover:text-primary flex items-center justify-center text-on-surface-variant transition-colors" onclick="document.getElementById('scale-input').stepDown()" type="button">
+<span class="material-symbols-outlined text-[14px]">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+<hr class="border-outline-variant/50"/>
+<!-- Sample Site Input -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface" for="site-input">Sample Site Identification</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded px-4 py-2.5 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary focus:shadow-[0_0_8px_rgba(45,212,191,0.4)] placeholder:text-outline/50 transition-all" id="site-input" placeholder="e.g., Station_A_Depth_5m" type="text"/>
+</div>
+<!-- Notes Textarea -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-sm text-label-sm text-on-surface" for="notes-input">Procedural Notes</label>
+<span class="font-label-sm text-label-sm text-on-surface-variant/70">Optional</span>
+</div>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded px-4 py-2.5 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary focus:shadow-[0_0_8px_rgba(45,212,191,0.4)] placeholder:text-outline/50 resize-y transition-all" id="notes-input" placeholder="Enter any specific environmental conditions or collection methodology notes here..." rows="3"></textarea>
+</div>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="flex items-center justify-end gap-4 mt-2">
+<button class="border border-outline-variant text-on-surface font-label-sm text-label-sm px-5 py-2.5 rounded hover:bg-surface-container-high hover:border-outline transition-colors" type="button">
+                        Cancel
+                    </button>
+<!-- Initial disabled state. Will be enabled via JS when file is selected. -->
+<button class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-6 py-2.5 rounded shadow-[0_0_10px_rgba(45,212,191,0.2)] opacity-50 cursor-not-allowed transition-all flex items-center gap-2" disabled="" id="run-analysis-btn" type="button">
+<span class="material-symbols-outlined text-[20px]">science</span>
+                        Run analysis
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant/50 w-full mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-mobile md:px-container-padding py-8 max-w-7xl mx-auto gap-4">
+<span class="font-label-sm text-label-sm text-on-surface-variant">© 2024 Microplastic Morphology Classifier. All rights reserved.</span>
+<ul class="flex flex-wrap items-center gap-6">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all duration-200" href="#">GitHub</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all duration-200" href="#">Contact</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all duration-200" href="#">Privacy Policy</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all duration-200" href="#">Documentation</a></li>
+</ul>
+</div>
+</footer>
+<!-- Processing State Overlay (Hidden by default) -->
+<div class="fixed inset-0 bg-background/80 backdrop-blur-md z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300" id="processing-overlay">
+<div class="glass-panel border border-primary/30 rounded-xl shadow-[0_0_40px_rgba(45,212,191,0.2)] p-8 w-full max-w-md mx-4 transform scale-95 transition-transform duration-300 flex flex-col items-center" id="processing-card">
+<!-- Animated Icon Container -->
+<div class="relative w-20 h-20 mb-6 flex items-center justify-center">
+<!-- Outer spinning ring -->
+<svg class="absolute inset-0 w-full h-full text-surface-variant animate-[spin_3s_linear_infinite]" fill="none" viewbox="0 0 100 100">
+<circle cx="50" cy="50" r="46" stroke="currentColor" stroke-dasharray="20 10" stroke-width="4"></circle>
+</svg>
+<!-- Inner spinning ring -->
+<svg class="absolute inset-0 w-full h-full text-primary animate-[spin_2s_linear_infinite_reverse]" fill="none" viewbox="0 0 100 100">
+<circle cx="50" cy="50" r="36" stroke="currentColor" stroke-dasharray="60 40" stroke-width="3"></circle>
+</svg>
+<!-- Center Icon -->
+<span class="material-symbols-outlined text-[32px] text-primary relative z-10 icon-fill drop-shadow-[0_0_8px_rgba(87,241,219,0.8)]">memory</span>
+</div>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Analyzing Sample</h3>
+<!-- Rotating Status Text -->
+<p class="font-body-md text-body-md text-primary/80 mb-8 h-6 flex items-center justify-center text-center font-label-sm" id="status-text">Initializing sequence...</p>
+<!-- Progress Bar -->
+<div class="w-full flex flex-col gap-2">
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden border border-outline-variant/30">
+<div class="h-full bg-primary rounded-full w-0 transition-all duration-300 ease-out shadow-[0_0_10px_rgba(87,241,219,0.8)]" id="progress-fill"></div>
+</div>
+<div class="flex justify-between items-center w-full">
+<span class="font-label-sm text-label-sm text-outline">Phase 1/3</span>
+<span class="font-label-sm text-label-sm text-primary font-label-sm" id="progress-percentage">0%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Logic -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInput = document.getElementById('file-input');
+            const dropzoneContent = document.getElementById('dropzone-content');
+            const fileSelectedState = document.getElementById('file-selected-state');
+            const removeFileBtn = document.getElementById('remove-file-btn');
+            const runBtn = document.getElementById('run-analysis-btn');
+            const overlay = document.getElementById('processing-overlay');
+            const processingCard = document.getElementById('processing-card');
+            const progressFill = document.getElementById('progress-fill');
+            const progressPercentage = document.getElementById('progress-percentage');
+            const statusText = document.getElementById('status-text');
+
+            // --- File Selection Logic ---
+            
+            // Handle file selection (simulated)
+            fileInput.addEventListener('change', function() {
+                if(this.files && this.files.length > 0) {
+                    showSelectedState();
+                } else {
+                    // For demo purposes, even if cancel is clicked, simulate a file selection to show the UI state
+                    showSelectedState();
+                }
+            });
+
+            // Handle remove file
+            removeFileBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                fileInput.value = ''; // Clear input
+                
+                // Hide selected state, show default
+                fileSelectedState.classList.add('hidden');
+                dropzoneContent.classList.remove('hidden');
+                
+                // Disable run button
+                runBtn.disabled = true;
+                runBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                runBtn.classList.remove('hover:bg-primary', 'hover:opacity-90', 'cursor-pointer', 'shadow-[0_0_15px_rgba(45,212,191,0.5)]');
+            });
+
+            function showSelectedState() {
+                dropzoneContent.classList.add('hidden');
+                fileSelectedState.classList.remove('hidden');
+                
+                // Enable run button
+                runBtn.disabled = false;
+                runBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                runBtn.classList.add('hover:opacity-90', 'cursor-pointer', 'shadow-[0_0_15px_rgba(45,212,191,0.4)]', 'hover:shadow-[0_0_20px_rgba(45,212,191,0.6)]');
+            }
+
+            // Optional: Drag and drop styling
+            const dropzone = document.getElementById('dropzone');
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, preventDefaults, false);
+            });
+            function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, () => dropzone.classList.add('dropzone-active'), false);
+            });
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, () => dropzone.classList.remove('dropzone-active'), false);
+            });
+            dropzone.addEventListener('drop', (e) => {
+                let dt = e.dataTransfer;
+                let files = dt.files;
+                if(files.length) { fileInput.files = files; showSelectedState(); }
+            }, false);
+
+
+            // --- Processing Overlay Logic ---
+
+            const statuses = [
+                "Segmenting background geometry...",
+                "Extracting morphological features...",
+                "Applying classification model...",
+                "Scoring confidence metrics...",
+                "Finalizing report..."
+            ];
+
+            runBtn.addEventListener('click', () => {
+                // Show Overlay
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                processingCard.classList.remove('scale-95');
+                processingCard.classList.add('scale-100');
+
+                // Simulate progress
+                let progress = 0;
+                let statusIndex = 0;
+                
+                const interval = setInterval(() => {
+                    // Increment progress randomly between 1 and 5
+                    progress += Math.floor(Math.random() * 5) + 1;
+                    
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        
+                        // Show complete state briefly before action
+                        statusText.textContent = "Analysis Complete.";
+                        progressFill.style.width = '100%';
+                        progressPercentage.textContent = '100%';
+                        
+                        setTimeout(() => {
+                            // Reset and hide overlay (In reality, redirect to results page)
+                            overlay.classList.add('opacity-0', 'pointer-events-none');
+                            processingCard.classList.add('scale-95');
+                            processingCard.classList.remove('scale-100');
+                            progressFill.style.width = '0%';
+                            progressPercentage.textContent = '0%';
+                            statusText.textContent = "Initializing sequence...";
+                            
+                            // Reset form for demo
+                            removeFileBtn.click();
+                        }, 1000);
+                        return;
+                    }
+
+                    // Update UI
+                    progressFill.style.width = `${progress}%`;
+                    progressPercentage.textContent = `${progress}%`;
+
+                    // Rotate text based on progress
+                    const expectedIndex = Math.floor((progress / 100) * statuses.length);
+                    if (expectedIndex > statusIndex && expectedIndex < statuses.length) {
+                        statusIndex = expectedIndex;
+                        
+                        // Simple fade effect for text change
+                        statusText.style.opacity = '0';
+                        setTimeout(() => {
+                            statusText.textContent = statuses[statusIndex];
+                            statusText.style.opacity = '1';
+                        }, 150);
+                    }
+
+                }, 150); // Speed of simulation
+            });
+        });
+    </script>
+</body></html>
